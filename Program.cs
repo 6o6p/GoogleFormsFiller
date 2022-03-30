@@ -19,6 +19,8 @@ namespace GoogleFormsFiller
             HttpResponseMessage response = await httpClient.GetAsync("https://docs.google.com/forms/d/e/1FAIpQLScn6pTePXTW0LodjrNYNXZT3jBZDUeedJh2WE7m2d1IJ5Ttww/viewform");
             response.EnsureSuccessStatusCode();
 
+            var headers = response.Content.GetType();
+
             return await response.Content.ReadAsStringAsync();
         }
     }

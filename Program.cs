@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -16,10 +17,14 @@ namespace GoogleFormsFiller
 
         public static async Task<string> Run(HttpClient httpClient)
         {
-            HttpResponseMessage response = await httpClient.GetAsync("https://docs.google.com/forms/d/e/1FAIpQLScn6pTePXTW0LodjrNYNXZT3jBZDUeedJh2WE7m2d1IJ5Ttww/viewform");
+            var uri = new Uri("https://docs.google.com/forms/d/e/1FAIpQLScn6pTePXTW0LodjrNYNXZT3jBZDUeedJh2WE7m2d1IJ5Ttww/viewform");
+
+
+
+
+            HttpResponseMessage response = await httpClient.GetAsync(uri);
             response.EnsureSuccessStatusCode();
 
-            var headers = response.Content.GetType();
 
             return await response.Content.ReadAsStringAsync();
         }

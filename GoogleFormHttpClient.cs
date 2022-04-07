@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GoogleFormsFiller.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -18,17 +19,17 @@ namespace GoogleFormsFiller
 
         public async Task<HttpResponseMessage> PostAsync(HttpContent content)
         {
-            return await PostAsync(_uri, content);
+            return await PostAsync(new Uri(_uri, "formResponse"), content);
         }
 
         public async Task<string> GetPublicLoadData()
         {
-            var response = await GetAsync(_uri);
+            var response = await GetAsync(new Uri(_uri,"viewform"));
             response.EnsureSuccessStatusCode();
 
             var page = await response.Content.ReadAsStringAsync();
 
-            var publicLoadData
+            var publicLoadData = new PublicLoadParser().ParsePublicLoadFromPage(page);
 
             return publicLoadData;
         }

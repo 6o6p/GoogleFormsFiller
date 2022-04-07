@@ -12,11 +12,11 @@ namespace GoogleFormsFiller
         public void Run()
         {
             Console.WriteLine("Введите идентификатор формы:");
-            var formAddress = $"https://docs.google.com/forms/d/e/{Console.ReadLine()}/formResponse";
+            var formAddress = $"https://docs.google.com/forms/d/e/{Console.ReadLine()}/";
 
             var filler = new GoogleFormHttpClient(formAddress);
 
-            var
+            var publicLoadData = filler.GetPublicLoadData();
 
             var content = new FormUrlEncodedContent(new[]
             {

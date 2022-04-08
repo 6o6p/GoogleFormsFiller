@@ -27,16 +27,33 @@ namespace GoogleFormsFiller.Infrastructure
                 }
             }
 
-            //var publicLoad = new StringBuilder();
+            var question = new StringBuilder();
+            var openingBrackets = new Stack<char>();
+            var questions = new List<string>();
+            foreach (var letter in temp)
+            {
+                if (openingBrackets.Count != 0)
+                    question.Append(letter);
 
-            //foreach(var character in rawPublicLoad)
-            //{ 
+                if(letter == '[')
+                    openingBrackets.Push(letter);
+                if (letter == ']')
+                    openingBrackets.Pop();
+                if (openingBrackets.Count == 0)
+                    break;
 
-            //}
+
+
+                if (openingBrackets.Count == 1 && question.Length != 0)
+                {
+                    questions.Add(question.ToString());
+                    question.Clear();
+                }
+            }
 
             return temp;
         }
 
-        //public string Parse
+        
     }
 }

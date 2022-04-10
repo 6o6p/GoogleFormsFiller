@@ -15,7 +15,7 @@ namespace GoogleFormsFiller.Infrastructure
             Result = ParseField(str, 0).field;
         }
 
-        public (SquareBracketsField field, int finish) ParseField(string str, int start)
+        private (SquareBracketsField field, int finish) ParseField(string str, int start)
         {
             var result = new SquareBracketsField();
             var finish = start+1;
@@ -55,7 +55,7 @@ namespace GoogleFormsFiller.Infrastructure
             return (result,finish);
         }
 
-        public (TextField field, int finish) ParseTextField(string str, int start)
+        private (TextField field, int finish) ParseTextField(string str, int start)
         {
             var result = new StringBuilder();
             var finish = start;
@@ -69,7 +69,7 @@ namespace GoogleFormsFiller.Infrastructure
             return (new TextField(result.ToString()), finish - 1);
         }
 
-        public (TextField field, int finish) ParseQuotedField(string str, int start)
+        private (TextField field, int finish) ParseQuotedField(string str, int start)
         {
             var result = new StringBuilder();
             var skippedSymbolsCounter = 0;

@@ -1,4 +1,4 @@
-﻿using GoogleFormsFiller.Infrastructure;
+﻿using GoogleFormsFiller;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,30 +8,37 @@ using System.Threading.Tasks;
 
 namespace GoogleFormsFiller
 {
-    class GoogleFormHttpClient : HttpClient
+    class GoogleFormHttpClient
     {
+        private readonly HttpClient _httpClient;
         private readonly Uri _uri;
+        private readonly GoogleForm _form;
 
         public GoogleFormHttpClient(string uri)
         {
+            _httpClient = new HttpClient();
             _uri = new Uri(uri);
+            _form = GetFormAsync().Result;
         }
 
         public async Task<HttpResponseMessage> PostAsync(HttpContent content)
         {
-            return await PostAsync(new Uri(_uri, "formResponse"), content);
+            return await _httpClient.PostAsync(new Uri(_uri, "formResponse"), content);
         }
 
-        public async Task<string> GetPublicLoadData()
+        public async Task<GoogleForm> GetFormAsync()
         {
-            var response = await GetAsync(new Uri(_uri,"viewform"));
-            response.EnsureSuccessStatusCode();
+            var newUri = new Uri(_uri, "viewform");
 
-            var page = await response.Content.ReadAsStringAsync();
+            var response = _httpClient.GetAsync(newUri);
+            //response.EnsureSuccessStatusCode();
 
-            var publicLoadData = new PublicLoadParser().ParsePublicLoadFromPage(page);
+            var content = response.Result.Content;
 
-            return publicLoadData;
+            var page = await content.ReadAsStringAsync();
+            //var page = await content.ReadAsAsync<string>();
+
+            return new GoogleForm(page);
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GoogleFormsFiller
 {
-    class Application
+    class ConsoleApplication
     {
         public void Run()
         {
@@ -15,8 +15,6 @@ namespace GoogleFormsFiller
             var formAddress = $"https://docs.google.com/forms/d/e/{Console.ReadLine()}/";
 
             var filler = new GoogleFormHttpClient(formAddress);
-
-            var publicLoadData = filler.GetPublicLoadData();
 
             var content = new FormUrlEncodedContent(new[]
             {

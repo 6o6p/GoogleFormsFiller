@@ -8,17 +8,36 @@ namespace GoogleFormsFiller.Infrastructure
 {
     class PublicLoadParser
     {
-        public SquareBracketsField Result { get; }
-
-        public PublicLoadParser(string str)
+        public string GetPublicLoad(string page)
         {
-            Result = ParseField(str, 0).field;
+            var rawPublicLoad = page.Split("var FB_PUBLIC_LOAD_DATA_ = ")[1];
+
+            var publicLoad = new StringBuilder();
+            var openingBrackets = new Stack<char>();
+
+            foreach (var letter in rawPublicLoad)
+            {
+                if (letter == '[')
+                    openingBrackets.Push(letter);
+
+                publicLoad.Append(letter);
+
+                if (letter == ']')
+                    openingBrackets.Pop();
+
+                if (openingBrackets.Count == 0)
+                    break;
+            }
+
+            return publicLoad.ToString();
         }
+
+        public SquareBracketsField ParsePublicLoad(string str) => ParseField(str, 0).field;
 
         private (SquareBracketsField field, int finish) ParseField(string str, int start)
         {
             var result = new SquareBracketsField();
-            var finish = start+1;
+            var finish = start;
 
             for (var i = start + 1; i < str.Length; i++)
             {
@@ -55,7 +74,7 @@ namespace GoogleFormsFiller.Infrastructure
             return (result,finish);
         }
 
-        private (TextField field, int finish) ParseTextField(string str, int start)
+        private static (TextField field, int finish) ParseTextField(string str, int start)
         {
             var result = new StringBuilder();
             var finish = start;
@@ -69,7 +88,7 @@ namespace GoogleFormsFiller.Infrastructure
             return (new TextField(result.ToString()), finish - 1);
         }
 
-        private (TextField field, int finish) ParseQuotedField(string str, int start)
+        private static (TextField field, int finish) ParseQuotedField(string str, int start)
         {
             var result = new StringBuilder();
             var skippedSymbolsCounter = 0;

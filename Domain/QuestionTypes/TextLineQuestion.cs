@@ -27,5 +27,7 @@ namespace GoogleFormsFiller.Domain.QuestionTypes
         public string GetEntries() => _entry;
 
         public string GetQuestion() => _question;
+
+        public string GetRandomAnswer() => new RandomAnswerGenerator().GenerateRandomString(13);
     }
 }

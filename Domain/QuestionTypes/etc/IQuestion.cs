@@ -11,6 +11,6 @@ namespace GoogleFormsFiller.Domain
         string GetQuestion();
         string GetEntries();
         string GetPossibleAnswers();
-
+        string GetRandomAnswer();
     }
 }

@@ -27,7 +27,7 @@ namespace GoogleFormsFiller.Infrastructure
             var answer = variants[rnd.Next(0, variants.Length)];
 
             return answer == string.Empty
-                ? GenerateRandomString(42)
+                ? GenerateRandomString(10)
                 : answer;
         }
     }

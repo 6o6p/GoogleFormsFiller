@@ -8,7 +8,7 @@ namespace GoogleFormsFiller.Infrastructure
 {
     public interface IField
     {
-        IField this[int index] { get;}
+        IField this[int index] { get; }
         string GetValue();
     }
 }

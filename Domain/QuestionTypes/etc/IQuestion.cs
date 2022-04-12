@@ -9,8 +9,7 @@ namespace GoogleFormsFiller.Domain
     public interface IQuestion
     {
         string GetQuestion();
-        string GetEntries();
         string GetPossibleAnswers();
-        string GetRandomAnswer();
+        KeyValuePair<string, string>[] GetRandomAnswer();
     }
 }

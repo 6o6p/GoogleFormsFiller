@@ -21,10 +21,23 @@ namespace GoogleFormsFiller
             _form = GetFormAsync().Result;
         }
 
-        public async Task<HttpResponseMessage> PostAsync(HttpContent content)
+        public async Task PostMultipleRandomAsync(int count)
         {
-            return await _httpClient.PostAsync(new Uri(_uri, "formResponse"), content);
+            var tasks = new List<Task<HttpResponseMessage>>();
+
+            while(count > 0)
+            {
+                tasks.Add(PostRandomAsync());
+                count--;
+            }
+
+            foreach (var task in await Task.WhenAll(tasks))
+                Console.WriteLine(task.StatusCode);
         }
+
+        public async Task<HttpResponseMessage> PostRandomAsync() =>
+            await _httpClient.PostAsync(new Uri(_uri, "formResponse"), new FormUrlEncodedContent(_form.GetRandomAnswers()));
+
 
         public async Task<GoogleForm> GetFormAsync()
         {

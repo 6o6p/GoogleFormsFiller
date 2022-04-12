@@ -10,8 +10,8 @@ namespace GoogleFormsFiller.Domain.QuestionTypes
     class TextLineQuestion : IQuestion
     {
         private readonly QuestionType _type;
-        private string _entry { get; }
-        private string _question { get; }
+        private readonly string _entry;
+        private readonly string _question;
 
         public TextLineQuestion(SquareBracketsField field)
         {
@@ -24,10 +24,11 @@ namespace GoogleFormsFiller.Domain.QuestionTypes
 
         public string GetPossibleAnswers() => "Пеши чо хошь. Ограничений нет.";
 
-        public string GetEntries() => _entry;
-
         public string GetQuestion() => _question;
 
-        public string GetRandomAnswer() => new RandomAnswerGenerator().GenerateRandomString(13);
+        public KeyValuePair<string, string>[] GetRandomAnswer() => new[]
+        {
+            new KeyValuePair<string, string>($"entry.{_entry}", new RandomAnswerGenerator().GenerateRandomString(13))
+        };
     }
 }

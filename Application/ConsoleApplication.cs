@@ -17,17 +17,13 @@ namespace GoogleFormsFiller
 
             var filler = new GoogleFormHttpClient(formAddress);
 
-            var content = new FormUrlEncodedContent(new[]
-            {
-                new KeyValuePair<string, string>("entry.1967548713", "BUP"),
-            });
+            Console.WriteLine("Сколько раз нужно отправить ответ?");
+            var count = int.TryParse(Console.ReadLine(), out var c)
+                ? c
+                : throw new ArgumentException("Число вводи");
 
-            var response = filler.PostAsync(content).Result;
+            filler.PostMultipleRandomAsync(count).Wait();
 
-            if (response.IsSuccessStatusCode)
-                Console.WriteLine("Success");
-            else
-                Console.WriteLine("Failed");
         }
     }
 }

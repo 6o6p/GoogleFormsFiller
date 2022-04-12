@@ -14,7 +14,7 @@ namespace GoogleFormsFiller.Domain.QuestionTypes
 
         }
 
-        public string GetRandomAnswer()
+        public KeyValuePair<string, string>[] GetRandomAnswer()
         {
             throw new NotImplementedException();
         }

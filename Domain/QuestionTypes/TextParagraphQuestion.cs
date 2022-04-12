@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GoogleFormsFiller.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,30 +9,26 @@ namespace GoogleFormsFiller.Domain.QuestionTypes
 {
     class TextParagraphQuestion : IQuestion
     {
+        private readonly QuestionType _type;
+        private readonly string _entry;
+        private readonly string _question;
 
-        public TextParagraphQuestion()
+        public TextParagraphQuestion(SquareBracketsField field)
         {
+            _question = field[1].GetValue();
 
+            _type = Enum.Parse<QuestionType>(field[3].GetValue());
+
+            _entry = field[4][0][0].GetValue();
         }
 
-        public string GetRandomAnswer()
-        {
-            throw new NotImplementedException();
-        }
+        public string GetPossibleAnswers() => "Пеши чо хошь. Ограничений нет.";
 
-        public string GetEntries()
-        {
-            throw new NotImplementedException();
-        }
+        public string GetQuestion() => _question;
 
-        public string GetPossibleAnswers()
+        public KeyValuePair<string, string>[] GetRandomAnswer() => new[]
         {
-            throw new NotImplementedException();
-        }
-
-        public string GetQuestion()
-        {
-            throw new NotImplementedException();
-        }
+            new KeyValuePair<string, string>($"entry.{_entry}", new RandomAnswerGenerator().GenerateRandomString(13))
+        };
     }
 }

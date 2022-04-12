@@ -22,10 +22,8 @@ namespace GoogleFormsFiller
             _questions = MakeQuestions(parsedPublicLoad[1][1] as SquareBracketsField);
         }
 
-        public KeyValuePair<string, string>[] GetRandomAnswers()
-        { 
-            return _questions.Select(q=>new KeyValuePair<string, string>(q.)) //TODO
-        }
+        public KeyValuePair<string, string>[] GetRandomAnswers() => 
+            _questions.SelectMany(q => q.GetRandomAnswer()).ToArray(); 
 
         private List<IQuestion> MakeQuestions(SquareBracketsField field)
         {
@@ -46,8 +44,8 @@ namespace GoogleFormsFiller
         private IQuestion MakeQuestion(QuestionType type, SquareBracketsField field) => type switch
         {
             QuestionType.TextLine => new TextLineQuestion(field),
-            QuestionType.TextParagraph => new TextParagraphQuestion(),
-            QuestionType.SingleChoice => new SingleChoiceQuestion(),
+            QuestionType.TextParagraph => new TextParagraphQuestion(field),
+            QuestionType.SingleChoice => new SingleChoiceQuestion(field),
             QuestionType.DropDownList => new DropDownListQuestion(),
             QuestionType.MultipleChoice => new MultipleChoiceQuestion(),
             QuestionType.Scale => new ScaleQuestion(),

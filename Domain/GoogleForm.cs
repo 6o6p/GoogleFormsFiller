@@ -46,8 +46,8 @@ namespace GoogleFormsFiller
             QuestionType.TextLine => new TextLineQuestion(field),
             QuestionType.TextParagraph => new TextParagraphQuestion(field),
             QuestionType.SingleChoice => new SingleChoiceQuestion(field),
-            QuestionType.DropDownList => new DropDownListQuestion(),
-            QuestionType.MultipleChoice => new MultipleChoiceQuestion(),
+            QuestionType.DropDownList => new DropDownListQuestion(field),
+            QuestionType.MultipleChoice => new MultipleChoiceQuestion(field),
             QuestionType.Scale => new ScaleQuestion(),
             QuestionType.Grid => new GridQuestion(),
             _ => throw new NotImplementedException(), //Студия упорно просила это сделать

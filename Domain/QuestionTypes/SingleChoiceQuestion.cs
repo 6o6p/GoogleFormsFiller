@@ -23,13 +23,26 @@ namespace GoogleFormsFiller.Domain.QuestionTypes
 
             _entry = field[4][0][0].GetValue();
 
-            _variants = (field[4][0][1] as SquareBracketsField).Fields.Select(f => (f as SquareBracketsField)[0].GetValue()).ToArray();
+            _variants = (field[4][0][1] as SquareBracketsField).Fields.Select(f => f[0].GetValue()).ToArray();
         }
 
-        public KeyValuePair<string, string>[] GetRandomAnswer() => new[]
+        public KeyValuePair<string, string>[] GetRandomAnswer()
         {
-            new KeyValuePair<string, string>($"entry.{_entry}", new RandomAnswerGenerator().SelectRandomVariant(_variants))
-        };
+            var rnd = new RandomAnswerGenerator();
+
+            var response = rnd.GetRandomVariant(_variants);
+
+            return response == string.Empty
+                ? new[]
+                {
+                    new KeyValuePair<string, string>($"entry.{_entry}.other_option_response", rnd.GetRandomString(10)),
+                    new KeyValuePair<string, string>($"entry.{_entry}", "__other_option__")
+                }
+                : new[]
+                {
+                    new KeyValuePair<string, string>($"entry.{_entry}", response)
+                };
+        }
 
         public string GetPossibleAnswers() => string.Join("\n", _variants.Select((v, i) => $"{i + 1}. {v}"));
 

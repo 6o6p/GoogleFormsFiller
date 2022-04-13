@@ -28,7 +28,7 @@ namespace GoogleFormsFiller.Domain.QuestionTypes
 
         public KeyValuePair<string, string>[] GetRandomAnswer() => new[]
         {
-            new KeyValuePair<string, string>($"entry.{_entry}", new RandomAnswerGenerator().GenerateRandomString(13))
+            new KeyValuePair<string, string>($"entry.{_entry}", new RandomAnswerGenerator().GetRandomString(13))
         };
     }
 }

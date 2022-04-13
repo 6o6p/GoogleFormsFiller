@@ -1,7 +1,9 @@
 ﻿using GoogleFormsFiller;
+using GoogleFormsFiller.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,9 +15,11 @@ namespace GoogleFormsFiller
         private readonly HttpClient _httpClient;
         private readonly Uri _uri;
         private readonly GoogleForm _form;
+        private readonly Proxy _proxy;
 
         public GoogleFormHttpClient(string uri)
         {
+            _proxy = new Proxy();
             _httpClient = new HttpClient();
             _uri = new Uri(uri);
             _form = GetFormAsync().Result;
@@ -31,8 +35,14 @@ namespace GoogleFormsFiller
                 count--;
             }
 
-            foreach (var task in await Task.WhenAll(tasks))
-                Console.WriteLine(task.StatusCode);
+            while(tasks.Count > 0)
+            {
+                HttpClient.DefaultProxy = new WebProxy(_proxy.GetNextProxy());
+                var task = await Task.WhenAny(tasks);
+                var taskResult = await task;
+                Console.WriteLine(taskResult.StatusCode);
+                tasks.Remove(task);
+            }
         }
 
         public async Task<HttpResponseMessage> PostRandomAsync() =>

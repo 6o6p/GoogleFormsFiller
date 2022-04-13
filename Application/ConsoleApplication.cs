@@ -23,7 +23,6 @@ namespace GoogleFormsFiller
                 : throw new ArgumentException("Число вводи");
 
             filler.PostMultipleRandomAsync(count).Wait();
-
         }
     }
 }

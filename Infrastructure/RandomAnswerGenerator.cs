@@ -8,27 +8,20 @@ namespace GoogleFormsFiller.Infrastructure
 {
     class RandomAnswerGenerator
     {
-        public string GenerateRandomString(int count)
-        {
-            var rnd = new Random();
+        private readonly Random _rnd = new Random();
 
+        public string GetRandomString(int count)
+        {
             var result = new StringBuilder();
 
             for (var i = 0; i < count; i++)
-                result.Append((char)rnd.Next(33, 127));
+                result.Append((char)_rnd.Next(33, 127));
 
             return result.ToString();
         }
 
-        public string SelectRandomVariant(string[] variants)
-        {
-            var rnd = new Random();
+        public string GetRandomVariant(string[] variants) => variants[_rnd.Next(0, variants.Length)];
 
-            var answer = variants[rnd.Next(0, variants.Length)];
-
-            return answer == string.Empty
-                ? GenerateRandomString(10)
-                : answer;
-        }
+        public bool Chosen() => _rnd.Next(0, 2) == 0 ? true : false;
     }
 }

@@ -9,7 +9,7 @@ namespace GoogleFormsFiller.Domain.QuestionTypes
 {
     class MultipleChoiceQuestion : IQuestion
     {
-        private readonly QuestionType _type;
+        private readonly QuestionType _type = QuestionType.MultipleChoice;
         private readonly string _entry;
         private readonly string _question;
 
@@ -19,11 +19,18 @@ namespace GoogleFormsFiller.Domain.QuestionTypes
         {
             _question = field[1].GetValue();
 
-            _type = Enum.Parse<QuestionType>(field[3].GetValue());
-
             _entry = field[4][0][0].GetValue();
 
             _variants = (field[4][0][1] as SquareBracketsField).Fields.Select(f => f[0].GetValue()).ToArray();
+        }
+
+        public MultipleChoiceQuestion(string question, SquareBracketsField field)
+        {
+            _question = question;
+
+            _entry = field[0].GetValue();
+
+            _variants = (field[1] as SquareBracketsField).Fields.Select(f => f[0].GetValue()).ToArray();
         }
 
         public KeyValuePair<string, string>[] GetRandomAnswer()

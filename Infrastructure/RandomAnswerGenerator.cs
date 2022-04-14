@@ -16,6 +16,7 @@ namespace GoogleFormsFiller.Infrastructure
 
             for (var i = 0; i < count; i++)
                 result.Append((char)_rnd.Next(33, 127));
+            //result.Append((char)_rnd.Next(33, 1106));
 
             return result.ToString();
         }

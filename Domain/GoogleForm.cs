@@ -48,8 +48,8 @@ namespace GoogleFormsFiller
             QuestionType.SingleChoice => new SingleChoiceQuestion(field),
             QuestionType.DropDownList => new DropDownListQuestion(field),
             QuestionType.MultipleChoice => new MultipleChoiceQuestion(field),
-            QuestionType.Scale => new ScaleQuestion(),
-            QuestionType.Grid => new GridQuestion(),
+            QuestionType.Scale => new ScaleQuestion(field),
+            QuestionType.Grid => new GridQuestion(field),
             _ => throw new NotImplementedException(), //Студия упорно просила это сделать
         };
     }

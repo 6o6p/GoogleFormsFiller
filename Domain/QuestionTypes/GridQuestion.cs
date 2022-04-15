@@ -25,7 +25,7 @@ namespace GoogleFormsFiller.Domain.QuestionTypes
             _questions.SelectMany(q => q.GetRandomAnswer()).ToArray();
 
         public string GetPossibleAnswers() => 
-            string.Join("\n", _questions.Select(q => q.GetPossibleAnswers()).ToArray());
+            string.Join("\n\n", _questions.Select(q => q.ToString()));
 
         public string GetQuestion() => _question;
 
@@ -44,5 +44,8 @@ namespace GoogleFormsFiller.Domain.QuestionTypes
             };
             throw new ArgumentException($"Что-то пошло не так. Поле: {sqField.GetValue()}, {question}, {type}");
         }
+
+        public override string ToString() => 
+            $"Тип вопрос: {_type.GetDescription()}\n\nВопрос: {GetQuestion()}\n\nВарианты ответа:\n{GetPossibleAnswers()}";
     }
 }

@@ -39,5 +39,8 @@ namespace GoogleFormsFiller.Domain.QuestionTypes
                     new KeyValuePair<string, string>($"entry.{_entry}", response)
                 };
         }
+
+        public override string ToString() =>
+            $"Тип вопрос: {_type.GetDescription()}\n\nВопрос: {GetQuestion()}\n\nВарианты ответа:\n{GetPossibleAnswers()}";
     }
 }

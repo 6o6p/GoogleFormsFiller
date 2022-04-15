@@ -23,7 +23,10 @@ namespace GoogleFormsFiller
         }
 
         public KeyValuePair<string, string>[] GetRandomAnswers() => 
-            _questions.SelectMany(q => q.GetRandomAnswer()).ToArray(); 
+            _questions.SelectMany(q => q.GetRandomAnswer()).ToArray();
+
+        public override string ToString() => string.Join("\n\n******************\n\n", _questions.Select(q => q.ToString()));
+
 
         private List<IQuestion> MakeQuestions(SquareBracketsField field)
         {

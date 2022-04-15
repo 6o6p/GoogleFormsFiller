@@ -12,5 +12,8 @@ namespace GoogleFormsFiller.Domain.QuestionTypes
         private readonly QuestionType _type = QuestionType.Scale;
 
         public ScaleQuestion(SquareBracketsField field) : base(field) { }
+
+        public override string ToString() =>
+            $"Тип вопрос: {_type.GetDescription()}\n\nВопрос: {GetQuestion()}\n\nВарианты ответа:\n{GetPossibleAnswers()}";
     }
 }

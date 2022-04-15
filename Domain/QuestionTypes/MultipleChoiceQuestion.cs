@@ -43,5 +43,8 @@ namespace GoogleFormsFiller.Domain.QuestionTypes
 
             return result.ToArray();
         }
+
+        public override string ToString() =>
+            $"Тип вопрос: {_type.GetDescription()}\n\nВопрос: {GetQuestion()}\n\nВарианты ответа:\n{GetPossibleAnswers()}";
     }
 }

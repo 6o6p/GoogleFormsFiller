@@ -56,6 +56,7 @@ namespace GoogleFormsFiller
             return result;
         }
 
+        public string PrintQuestions() => _form.ToString();
 
         public async Task<GoogleForm> GetFormAsync()
         {

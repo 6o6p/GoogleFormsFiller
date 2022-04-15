@@ -17,6 +17,9 @@ namespace GoogleFormsFiller
 
             var filler = new GoogleFormHttpClient(formAddress);
 
+            Console.WriteLine("Найдены следующие вопросы:");
+            Console.WriteLine(filler.PrintQuestions());
+
             Console.WriteLine("Сколько раз нужно отправить ответ?");
             var count = int.TryParse(Console.ReadLine(), out var c)
                 ? c

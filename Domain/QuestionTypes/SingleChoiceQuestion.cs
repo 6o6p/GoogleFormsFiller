@@ -7,24 +7,13 @@ using System.Threading.Tasks;
 
 namespace GoogleFormsFiller.Domain.QuestionTypes
 {
-    class SingleChoiceQuestion : IQuestion
+    class SingleChoiceQuestion : BaseChoiсeQuestion
     {
         private readonly QuestionType _type = QuestionType.SingleChoice;
-        private readonly string _entry;
-        private readonly string _question;
 
-        private readonly string[] _variants;
+        public SingleChoiceQuestion(SquareBracketsField field) : base(field) { }
 
-        public SingleChoiceQuestion(SquareBracketsField field)
-        {
-            _question = field[1].GetValue();
-
-            _entry = field[4][0][0].GetValue();
-
-            _variants = (field[4][0][1] as SquareBracketsField).Fields.Select(f => f[0].GetValue()).ToArray();
-        }
-
-        public SingleChoiceQuestion(string question, SquareBracketsField field)
+        public SingleChoiceQuestion(string question, SquareBracketsField field) 
         {
             _question = question;
 
@@ -33,7 +22,7 @@ namespace GoogleFormsFiller.Domain.QuestionTypes
             _variants = (field[1] as SquareBracketsField).Fields.Select(f => f[0].GetValue()).ToArray();
         }
 
-        public KeyValuePair<string, string>[] GetRandomAnswer()
+        public override KeyValuePair<string, string>[] GetRandomAnswer()
         {
             var rnd = new RandomAnswerGenerator();
 
@@ -50,9 +39,5 @@ namespace GoogleFormsFiller.Domain.QuestionTypes
                     new KeyValuePair<string, string>($"entry.{_entry}", response)
                 };
         }
-
-        public string GetPossibleAnswers() => string.Join("\n", _variants.Select((v, i) => $"{i + 1}. {v}"));
-
-        public string GetQuestion() => _question;
     }
 }

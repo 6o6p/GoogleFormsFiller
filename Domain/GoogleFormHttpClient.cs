@@ -37,16 +37,24 @@ namespace GoogleFormsFiller
 
             while(tasks.Count > 0)
             {
-                HttpClient.DefaultProxy = new WebProxy(_proxy.GetNextProxy());
                 var task = await Task.WhenAny(tasks);
                 var taskResult = await task;
-                Console.WriteLine(taskResult.StatusCode);
+                Console.WriteLine($"{(HttpClient.DefaultProxy as WebProxy).Address}\t{taskResult.StatusCode}");
                 tasks.Remove(task);
             }
         }
 
-        public async Task<HttpResponseMessage> PostRandomAsync() =>
-            await _httpClient.PostAsync(new Uri(_uri, "formResponse"), new FormUrlEncodedContent(_form.GetRandomAnswers()));
+        public async Task<HttpResponseMessage> PostRandomAsync()
+        {
+            HttpResponseMessage result;
+            do
+            {
+                HttpClient.DefaultProxy = new WebProxy(_proxy.GetNextProxy());
+                result = await _httpClient.PostAsync(new Uri(_uri, "formResponse"), new FormUrlEncodedContent(_form.GetRandomAnswers()));
+            } while (!result.IsSuccessStatusCode);
+
+            return result;
+        }
 
 
         public async Task<GoogleForm> GetFormAsync()

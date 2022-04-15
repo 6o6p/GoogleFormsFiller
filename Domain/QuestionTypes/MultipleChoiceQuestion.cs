@@ -1,28 +1,14 @@
 ﻿using GoogleFormsFiller.Infrastructure;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GoogleFormsFiller.Domain.QuestionTypes
 {
-    class MultipleChoiceQuestion : IQuestion
+    class MultipleChoiceQuestion : BaseChoiсeQuestion
     {
         private readonly QuestionType _type = QuestionType.MultipleChoice;
-        private readonly string _entry;
-        private readonly string _question;
 
-        private readonly string[] _variants;
-
-        public MultipleChoiceQuestion(SquareBracketsField field)
-        {
-            _question = field[1].GetValue();
-
-            _entry = field[4][0][0].GetValue();
-
-            _variants = (field[4][0][1] as SquareBracketsField).Fields.Select(f => f[0].GetValue()).ToArray();
-        }
+        public MultipleChoiceQuestion(SquareBracketsField field) : base(field) { }
 
         public MultipleChoiceQuestion(string question, SquareBracketsField field)
         {
@@ -33,7 +19,7 @@ namespace GoogleFormsFiller.Domain.QuestionTypes
             _variants = (field[1] as SquareBracketsField).Fields.Select(f => f[0].GetValue()).ToArray();
         }
 
-        public KeyValuePair<string, string>[] GetRandomAnswer()
+        public override KeyValuePair<string, string>[] GetRandomAnswer()
         {
             var rnd = new RandomAnswerGenerator();
             var result = new List<KeyValuePair<string, string>>();
@@ -57,9 +43,5 @@ namespace GoogleFormsFiller.Domain.QuestionTypes
 
             return result.ToArray();
         }
-
-        public string GetPossibleAnswers() => string.Join("\n", _variants.Select((v, i) => $"{i + 1}. {v}"));
-
-        public string GetQuestion() => _question;
     }
 }
